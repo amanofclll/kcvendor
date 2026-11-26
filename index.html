@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signage & Print Pro Calculator & Utility Suite</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Top Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 no-print shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-calculator text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg text-slate-900 tracking-tight">Signage & Print Pro Calculator</h1>
+                    <p class="text-xs text-slate-500 hidden sm:block">Vendor Rate Engine, Manual Pricing & Dimension Utility Suite</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <button type="button" onclick="app.switchTab('calculator')" id="navCalcBtn" class="px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-50 text-indigo-700 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span class="hidden sm:inline">Calculator & Quote</span>
+                    <span class="sm:hidden">Calc</span>
+                </button>
+                <button type="button" onclick="app.switchTab('settings')" id="navSettingsBtn" class="px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-tags"></i>
+                    <span class="hidden sm:inline">Price Settings</span>
+                    <span class="sm:hidden">Prices</span>
+                </button>
+                <button type="button" onclick="app.switchTab('converter')" id="navConvBtn" class="px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-ruler-combined"></i>
+                    <span class="hidden sm:inline">Utility Converters</span>
+                    <span class="sm:hidden">Tools</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: CALCULATOR & QUOTE BUILDER -->
+        <div id="tabCalculator" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Left Column: Instant Calculation Engine (6 Cols) -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                        <h2 class="text-sm sm:text-base font-semibold text-slate-900 mb-4 flex items-center">
+                            <i class="fa-solid fa-sliders text-indigo-600 mr-2"></i> 1. Vendor, Material & Rate Setup
+                        </h2>
+
+                        <div class="space-y-4">
+                            <!-- Vendor Selector -->
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Choose Vendor</label>
+                                <select id="vendorSelect" onchange="app.onVendorChange()" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                                    <!-- Dynamic vendors -->
+                                </select>
+                            </div>
+
+                            <!-- Product Selector -->
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Product / Material</label>
+                                <select id="productSelect" onchange="app.onProductChange()" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                                    <!-- Dynamic products -->
+                                </select>
+                            </div>
+
+                            <!-- Rate Source & Manual Price Setting Box -->
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-indian-rupee-sign text-indigo-600"></i> Price Setting
+                                    </label>
+                                    <div class="inline-flex rounded-lg p-1 bg-slate-200/70 text-xs font-medium">
+                                        <button type="button" id="rateModeVendorBtn" onclick="app.setRateMode('vendor')" class="px-2.5 py-1 rounded-md bg-white text-indigo-700 shadow-sm transition">Vendor Rate</button>
+                                        <button type="button" id="rateModeManualBtn" onclick="app.setRateMode('manual')" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition">Manual Price</button>
+                                    </div>
+                                </div>
+
+                                <!-- Manual Price Controls (Wrapper avoids Tailwind hidden+grid conflict) -->
+                                <div id="manualRateControls" class="hidden pt-1">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Your Custom Rate (₹)</label>
+                                            <input type="number" id="inputManualRate" value="45" step="any" min="0" oninput="app.calculateLive()" class="w-full px-3 py-2 text-sm bg-white border border-indigo-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold text-indigo-900">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Calculation Type</label>
+                                            <select id="inputManualType" onchange="app.calculateLive()" class="w-full px-3 py-2 text-sm bg-white border border-indigo-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-slate-800">
+                                                <option value="sqft">Per Sq. Ft. (Area × Rate)</option>
+                                                <option value="fixed">Fixed Unit (Qty × Rate)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vendor Rate Preview -->
+                                <div id="vendorRateInfo" class="flex items-center justify-between text-xs text-slate-500">
+                                    <span>Using rate from <strong id="activeVendorName" class="text-slate-700">AD MEDIA</strong> sheet</span>
+                                    <span id="activeVendorRateBadge" class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md">₹45 / Sqft</span>
+                                </div>
+                            </div>
+
+                            <!-- Unit Mode Selector -->
+                            <div class="flex items-center justify-between pt-1">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500">Input Unit Mode</label>
+                                <div class="inline-flex rounded-lg p-1 bg-slate-100 border border-slate-200 text-xs font-medium">
+                                    <button type="button" id="modeFeetBtn" onclick="app.setUnitMode('feet')" class="px-3 py-1 rounded-md bg-white text-indigo-700 shadow-sm transition">Feet (ft)</button>
+                                    <button type="button" id="modeInchesBtn" onclick="app.setUnitMode('inches')" class="px-3 py-1 rounded-md text-slate-600 hover:text-slate-900 transition">Inches (in)</button>
+                                </div>
+                            </div>
+
+                            <!-- Dimension Inputs -->
+                            <div class="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label id="labelWidth" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Width (ft)</label>
+                                    <input type="number" id="inputWidth" value="3" step="any" min="0" oninput="app.calculateLive()" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                                </div>
+                                <div>
+                                    <label id="labelHeight" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Height (ft)</label>
+                                    <input type="number" id="inputHeight" value="6" step="any" min="0" oninput="app.calculateLive()" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Quantity</label>
+                                    <input type="number" id="inputQty" value="1" min="1" step="1" oninput="app.calculateLive()" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                                </div>
+                            </div>
+
+                            <!-- Item Label Note -->
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Item Custom Label / Note</label>
+                                <input type="text" id="inputCustomName" placeholder="e.g. Main Entrance Standee" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instant Output Card -->
+                    <div class="bg-indigo-900 text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl font-bold pointer-events-none">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-indigo-200 text-xs font-semibold uppercase tracking-wider">Live Calculation Output</h3>
+                            <span id="outRateSourceBadge" class="text-[10px] font-bold uppercase tracking-wider bg-indigo-800 text-indigo-200 px-2.5 py-0.5 rounded-full">Vendor Sheet</span>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-indigo-800">
+                            <div>
+                                <span class="block text-indigo-300 text-xs">Total Area</span>
+                                <span id="outArea" class="text-base sm:text-lg font-bold">18.00 Sqft</span>
+                            </div>
+                            <div>
+                                <span class="block text-indigo-300 text-xs">Unit Rate</span>
+                                <span id="outRate" class="text-base sm:text-lg font-bold">₹45</span>
+                            </div>
+                            <div>
+                                <span class="block text-indigo-300 text-xs">Pricing Mode</span>
+                                <span id="outMode" class="text-xs font-semibold bg-indigo-800 px-2 py-1 rounded inline-block mt-1">By Sq. Ft.</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <span class="text-xs sm:text-sm text-indigo-200">Calculated Item Price</span>
+                                <h2 id="outTotalPrice" class="text-2xl sm:text-3xl font-extrabold text-white">₹810.00</h2>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="app.addToQuote()" class="w-full py-3 bg-white text-indigo-900 font-bold rounded-xl shadow hover:bg-indigo-50 transition flex items-center justify-center space-x-2 text-sm">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Add to Quotation Table</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Quotation Summary Table & Grand Total (6 Cols) -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between min-h-[500px]">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                                <h2 class="text-sm sm:text-base font-semibold text-slate-900 flex items-center">
+                                    <i class="fa-solid fa-file-invoice-dollar text-indigo-600 mr-2"></i> Quotation Summary
+                                </h2>
+                                <span id="itemCountBadge" class="text-xs bg-slate-100 text-slate-600 font-bold px-2.5 py-1 rounded-full">0 items</span>
+                            </div>
+
+                            <!-- Quote Items List Container -->
+                            <div id="quoteItemsList" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                                <!-- Rendered by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Grand Total & Actions Footer -->
+                        <div class="pt-4 border-t border-slate-200 space-y-4 mt-6">
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm text-slate-600">
+                                    <span>Subtotal</span>
+                                    <span id="summarySubtotal" class="font-semibold text-slate-900">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-slate-600 items-center">
+                                    <span>GST / Tax (%)</span>
+                                    <input type="number" id="taxRate" value="18" min="0" max="100" step="any" oninput="app.calculateGrandTotal()" class="w-16 px-2 py-1 text-right text-sm bg-slate-50 border border-slate-300 rounded-lg">
+                                </div>
+                                <div class="flex justify-between text-base font-bold text-slate-900 pt-2 border-t border-slate-100">
+                                    <span>Grand Total</span>
+                                    <span id="summaryGrandTotal" class="text-xl text-indigo-600">₹0.00</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2.5 no-print">
+                                <button type="button" onclick="app.printQuote()" class="py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm rounded-xl shadow transition flex items-center justify-center space-x-1.5">
+                                    <i class="fa-solid fa-print"></i>
+                                    <span>Print</span>
+                                </button>
+                                <button type="button" onclick="app.copyQuoteText()" class="py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm rounded-xl transition flex items-center justify-center space-x-1.5">
+                                    <i class="fa-solid fa-copy"></i>
+                                    <span>Copy Text</span>
+                                </button>
+                                <button type="button" onclick="app.resetAll()" class="py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-semibold text-xs sm:text-sm rounded-xl transition flex items-center justify-center space-x-1.5">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    <span>Reset</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 2: PRICE SETTINGS MANAGER -->
+        <div id="tabSettings" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-tags text-indigo-600"></i> Vendor & Custom Price Settings
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Edit per-sqft or fixed unit rates for any vendor. Changes save automatically in your browser.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="app.resetDefaultRates()" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-rotate-left"></i> Reset Defaults
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vendor Filter & Add New Material -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="lg:col-span-3">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Select Vendor to Edit</label>
+                        <select id="settingsVendorSelect" onchange="app.renderPriceSettingsTable()" class="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+                        </select>
+                    </div>
+                    <div class="lg:col-span-3">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Add New Material Name</label>
+                        <input type="text" id="newProductName" placeholder="e.g. SUNBOARD 8MM" class="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Rate (₹)</label>
+                        <input type="number" id="newProductRate" placeholder="e.g. 120" step="any" min="0" class="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Pricing Type</label>
+                        <select id="newProductType" class="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="sqft">Per Sq. Ft.</option>
+                            <option value="fixed">Fixed Unit</option>
+                        </select>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <button type="button" onclick="app.addNewProduct()" class="w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> Add Item
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editable Rate Table -->
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
+                                <th class="py-3 px-4 font-semibold">Material / Product</th>
+                                <th class="py-3 px-4 font-semibold w-44">Pricing Mode</th>
+                                <th class="py-3 px-4 font-semibold w-40">Rate (₹)</th>
+                                <th class="py-3 px-4 font-semibold w-20 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="priceSettingsTableBody" class="divide-y divide-slate-100 text-sm">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: UTILITY CONVERTER SUITE -->
+        <div id="tabConverter" class="space-y-6 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Tool 1: Inches to Feet Converter -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center space-x-3 pb-3 border-b border-slate-100">
+                        <div class="bg-indigo-50 text-indigo-600 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">Inches to Feet Converter</h3>
+                            <p class="text-xs text-slate-500">Quickly convert inch measurements to exact feet</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Enter Value in Inches</label>
+                            <input type="number" id="convInchesInput" value="36" step="any" oninput="app.convertInchesToFeet()" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-indigo-900 uppercase">Converted Result:</span>
+                            <span id="convInchesResult" class="text-lg font-extrabold text-indigo-700">3.00 ft (36")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 2: Quick Area (Sq Ft) Calculator -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center space-x-3 pb-3 border-b border-slate-100">
+                        <div class="bg-indigo-50 text-indigo-600 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-expand text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">Square Footage (Sq Ft) Calculator</h3>
+                            <p class="text-xs text-slate-500">Calculate area with custom rate estimation</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Width (Inches)</label>
+                            <input type="number" id="areaWidthIn" value="36" step="any" oninput="app.calculateQuickArea()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Height (Inches)</label>
+                            <input type="number" id="areaHeightIn" value="72" step="any" oninput="app.calculateQuickArea()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Estimated Rate per Sq Ft (₹)</label>
+                        <input type="number" id="areaRateIn" value="45" step="any" oninput="app.calculateQuickArea()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100 flex items-center justify-between">
+                        <div>
+                            <span class="block text-xs text-indigo-900 font-medium">Total Area: <strong id="quickAreaSqft">18.00 Sqft</strong></span>
+                            <span class="text-xs text-indigo-900 font-medium">Width: <strong id="quickAreaFtW">3.00 ft</strong> × Height: <strong id="quickAreaFtH">6.00 ft</strong></span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-[10px] uppercase font-semibold text-indigo-600">Estimated Cost</span>
+                            <span id="quickAreaCost" class="text-lg font-extrabold text-indigo-700">₹810.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 3: Running Meter / Multi-piece Total Calculator -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4 md:col-span-2">
+                    <div class="flex items-center space-x-3 pb-3 border-b border-slate-100">
+                        <div class="bg-indigo-50 text-indigo-600 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-layer-group text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">Bulk / Multi-Piece Dimension Calculator</h3>
+                            <p class="text-xs text-slate-500">Multiply total area by quantity automatically</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Width (ft)</label>
+                            <input type="number" id="bulkW" value="5" step="any" oninput="app.calculateBulk()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Height (ft)</label>
+                            <input type="number" id="bulkH" value="7" step="any" oninput="app.calculateBulk()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Quantity (Pcs)</label>
+                            <input type="number" id="bulkQty" value="2" min="1" step="1" oninput="app.calculateBulk()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Rate per SqFt (₹)</label>
+                            <input type="number" id="bulkRate" value="65" step="any" oninput="app.calculateBulk()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-slate-100 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="text-xs sm:text-sm text-slate-700">
+                            Combined Area for <span id="bulkQtyText" class="font-bold">2</span> pieces: <strong id="bulkTotalSqft" class="text-indigo-600 font-bold">70.00 Sqft</strong>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500 uppercase font-semibold">Total Price: </span>
+                            <span id="bulkTotalPrice" class="text-xl font-extrabold text-slate-900 ml-2">₹4,550.00</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center space-x-3 text-sm pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toastMessage">Action completed successfully</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-6 border-t border-slate-200 bg-white text-center text-xs text-slate-500 no-print">
+        <p>Signage & Print Pro Calculator Suite &bull; Supports Vendor Price Sheets & Custom Manual Pricing.</p>
+    </footer>
+
+    <!-- Main JavaScript Engine -->
+    <script>
+        const STORAGE_KEY = 'signage_pro_rate_cards_v1';
+
+        const DEFAULT_RATE_CARDS = {
+            "AD MEDIA": {
+                "VINYL": 45,
+                "VINYL SUNBOARD 3 MM": 85,
+                "VINYL SUNBOARD 5 MM": 110,
+                "ONE WAY VISION": 55,
+                "TRANSLIGHT": 120,
+                "TRANSPARENT VINYL": 60,
+                "FLEX CHANGE": 20,
+                "BANNER MEDIA": 18,
+                "BANNER NORMAL": 15,
+                "BANNER STAR": 25,
+                "BANNER BLACKOUT": 35,
+                "BANNER MINI STAR": 22,
+                "MS FRAME BOARD": 140,
+                "BACKLIGHT BOARD": 180,
+                "BACKLIGHT BOARD DOUBLE SIDE": 320,
+                "LIGHT BOARD": 150,
+                "ACRYLIC BOARD": 250,
+                "SUN BOARD 3MM": 75,
+                "SUN BOARD 5MM": 95,
+                "HOARDING": 200,
+                "STENDE 2.5 X 5 FEET": { rate: 1000, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1150, type: "fixed" },
+                "T-Stend Double Side": { rate: 1400, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 3500, type: "fixed" },
+                "STANDEE COMPLETE": { rate: 1150, type: "fixed" },
+                "POSTER A1": { rate: 150, type: "fixed" },
+                "POSTER": { rate: 100, type: "fixed" },
+                "letter cutting": 15,
+                "PAMPHLATE": { rate: 2, type: "fixed" },
+                "LETTER HEAD": { rate: 3, type: "fixed" },
+                "VISITING CARD": { rate: 250, type: "fixed" }
+            },
+            "DAYA ENT.": {
+                "VINYL": 42,
+                "VINYL SUNBOARD 3 MM": 80,
+                "VINYL SUNBOARD 5 MM": 105,
+                "ONE WAY VISION": 52,
+                "TRANSLIGHT": 115,
+                "TRANSPARENT VINYL": 58,
+                "FLEX CHANGE": 18,
+                "BANNER MEDIA": 16,
+                "BANNER NORMAL": 14,
+                "BANNER STAR": 23,
+                "BANNER BLACKOUT": 32,
+                "BANNER MINI STAR": 20,
+                "MS FRAME BOARD": 135,
+                "BACKLIGHT BOARD": 170,
+                "BACKLIGHT BOARD DOUBLE SIDE": 300,
+                "LIGHT BOARD": 145,
+                "ACRYLIC BOARD": 240,
+                "SUN BOARD 3MM": 70,
+                "SUN BOARD 5MM": 90,
+                "HOARDING": 190,
+                "STENDE 2.5 X 5 FEET": { rate: 950, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1100, type: "fixed" },
+                "T-Stend Double Side": { rate: 1300, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 3300, type: "fixed" },
+                "STANDEE COMPLETE": { rate: 1100, type: "fixed" },
+                "POSTER A1": { rate: 140, type: "fixed" },
+                "POSTER": { rate: 90, type: "fixed" },
+                "letter cutting": 14,
+                "PAMPHLATE": { rate: 1.8, type: "fixed" },
+                "LETTER HEAD": { rate: 2.8, type: "fixed" },
+                "VISITING CARD": { rate: 230, type: "fixed" }
+            },
+            "AD ZONE": {
+                "VINYL": 48,
+                "VINYL SUNBOARD 3 MM": 90,
+                "VINYL SUNBOARD 5 MM": 115,
+                "ONE WAY VISION": 58,
+                "TRANSLIGHT": 125,
+                "TRANSPARENT VINYL": 62,
+                "FLEX CHANGE": 22,
+                "BANNER MEDIA": 20,
+                "BANNER NORMAL": 17,
+                "BANNER STAR": 27,
+                "BANNER BLACKOUT": 38,
+                "BANNER MINI STAR": 24,
+                "MS FRAME BOARD": 145,
+                "BACKLIGHT BOARD": 190,
+                "BACKLIGHT BOARD DOUBLE SIDE": 340,
+                "LIGHT BOARD": 160,
+                "ACRYLIC BOARD": 260,
+                "SUN BOARD 3MM": 80,
+                "SUN BOARD 5MM": 100,
+                "HOARDING": 210,
+                "STENDE 2.5 X 5 FEET": { rate: 1050, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1200, type: "fixed" },
+                "T-Stend Double Side": { rate: 1500, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 3600, type: "fixed" },
+                "STANDEE COMPLETE": { rate: 1200, type: "fixed" },
+                "POSTER A1": { rate: 160, type: "fixed" },
+                "POSTER": { rate: 110, type: "fixed" },
+                "letter cutting": 16,
+                "PAMPHLATE": { rate: 2.2, type: "fixed" },
+                "LETTER HEAD": { rate: 3.2, type: "fixed" },
+                "VISITING CARD": { rate: 270, type: "fixed" }
+            },
+            "CREATIVAGE": {
+                "VINYL": 45,
+                "VINYL SUNBOARD 3 MM": 85,
+                "VINYL SUNBOARD 5 MM": 110,
+                "ONE WAY VISION": 55,
+                "TRANSLIGHT": 120,
+                "TRANSPARENT VINYL": 60,
+                "FLEX CHANGE": 20,
+                "BANNER MEDIA": 18,
+                "BANNER NORMAL": 15,
+                "BANNER STAR": 25,
+                "BANNER BLACKOUT": 35,
+                "BANNER MINI STAR": 22,
+                "MS FRAME BOARD": 140,
+                "BACKLIGHT BOARD": 180,
+                "BACKLIGHT BOARD DOUBLE SIDE": 320,
+                "LIGHT BOARD": 150,
+                "ACRYLIC BOARD": 250,
+                "SUN BOARD 3MM": 75,
+                "SUN BOARD 5MM": 95,
+                "HOARDING": 200,
+                "STENDE 2.5 X 5 FEET": { rate: 1000, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1150, type: "fixed" },
+                "T-Stend Double Side": { rate: 1400, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 3500, type: "fixed" },
+                "STANDEE COMPLETE": { rate: 1150, type: "fixed" },
+                "POSTER A1": { rate: 150, type: "fixed" },
+                "POSTER": { rate: 100, type: "fixed" },
+                "letter cutting": 15,
+                "PAMPHLATE": { rate: 2, type: "fixed" },
+                "LETTER HEAD": { rate: 3, type: "fixed" },
+                "VISITING CARD": { rate: 250, type: "fixed" }
+            },
+            "Geeta": {
+                "VINYL": 40,
+                "VINYL SUNBOARD 3 MM": 78,
+                "VINYL SUNBOARD 5 MM": 100,
+                "ONE WAY VISION": 50,
+                "TRANSLIGHT": 110,
+                "TRANSPARENT VINYL": 55,
+                "FLEX CHANGE": 17,
+                "BANNER MEDIA": 15,
+                "BANNER NORMAL": 13,
+                "BANNER STAR": 22,
+                "BANNER BLACKOUT": 30,
+                "BANNER MINI STAR": 19,
+                "MS FRAME BOARD": 130,
+                "BACKLIGHT BOARD": 165,
+                "BACKLIGHT BOARD DOUBLE SIDE": 290,
+                "LIGHT BOARD": 140,
+                "ACRYLIC BOARD": 230,
+                "SUN BOARD 3MM": 68,
+                "SUN BOARD 5MM": 88,
+                "HOARDING": 185,
+                "STENDE 2.5 X 5 FEET": { rate: 900, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1050, type: "fixed" },
+                "T-Stend Double Side": { rate: 1250, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 3200, type: "fixed" },
+                "STANDEE COMPLETE": { rate: 1050, type: "fixed" },
+                "POSTER A1": { rate: 130, type: "fixed" },
+                "POSTER": { rate: 85, type: "fixed" },
+                "letter cutting": 13,
+                "PAMPHLATE": { rate: 1.5, type: "fixed" },
+                "LETTER HEAD": { rate: 2.5, type: "fixed" },
+                "VISITING CARD": { rate: 210, type: "fixed" }
+            },
+            "SHREE VASU PRINT": {
+                "VINYL": 43,
+                "VINYL SUNBOARD 3 MM": 82,
+                "VINYL SUNBOARD 5 MM": 108,
+                "ONE WAY VISION": 53,
+                "TRANSLIGHT": 118,
+                "TRANSPARENT VINYL": 59,
+                "FLEX CHANGE": 19,
+                "BANNER MEDIA": 17,
+                "BANNER NORMAL": 14,
+                "BANNER STAR": 24,
+                "BANNER BLACKOUT": 33,
+                "BANNER MINI STAR": 21,
+                "MS FRAME BOARD": 138,
+                "BACKLIGHT BOARD": 175,
+                "BACKLIGHT BOARD DOUBLE SIDE": 310,
+                "LIGHT BOARD": 148,
+                "ACRYLIC BOARD": 245,
+                "SUN BOARD 3MM": 72,
+                "SUN BOARD 5MM": 92,
+                "HOARDING": 195,
+                "STENDE 2.5 X 5 FEET": { rate: 980, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1050, type: "fixed" },
+                "T-Stend Double Side": { rate: 1350, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 3400, type: "fixed" },
+                "STANDEE COMPLETE": { rate: 1050, type: "fixed" },
+                "POSTER A1": { rate: 145, type: "fixed" },
+                "POSTER": { rate: 95, type: "fixed" },
+                "letter cutting": 14,
+                "PAMPHLATE": { rate: 1.9, type: "fixed" },
+                "LETTER HEAD": { rate: 2.9, type: "fixed" },
+                "VISITING CARD": { rate: 220, type: "fixed" }
+            }
+        };
+
+        class SignageProApp {
+            constructor() {
+                this.rateCards = this.loadRateCards();
+                this.quoteItems = [];
+                this.unitMode = 'feet';
+                this.rateMode = 'vendor';
+                this.toastTimer = null;
+                this.currentCalculation = {
+                    area: 0,
+                    unitRate: 0,
+                    total: 0,
+                    mode: 'By Sq. Ft.',
+                    isManual: false
+                };
+                this.init();
+            }
+
+            escapeHtml(str) {
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            loadRateCards() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) return JSON.parse(saved);
+                } catch (e) {
+                    console.warn('Could not read saved rates:', e);
+                }
+                return JSON.parse(JSON.stringify(DEFAULT_RATE_CARDS));
+            }
+
+            saveRateCards() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.rateCards));
+                } catch (e) {
+                    console.warn('Could not save rates:', e);
+                }
+            }
+
+            init() {
+                this.populateVendors();
+                this.onVendorChange();
+                this.renderQuoteItems();
+                this.renderPriceSettingsTable();
+                this.convertInchesToFeet();
+                this.calculateQuickArea();
+                this.calculateBulk();
+            }
+
+            switchTab(tab) {
+                const tabs = {
+                    calculator: { el: document.getElementById('tabCalculator'), btn: document.getElementById('navCalcBtn') },
+                    settings: { el: document.getElementById('tabSettings'), btn: document.getElementById('navSettingsBtn') },
+                    converter: { el: document.getElementById('tabConverter'), btn: document.getElementById('navConvBtn') }
+                };
+
+                Object.keys(tabs).forEach(key => {
+                    if (key === tab) {
+                        tabs[key].el.classList.remove('hidden');
+                        tabs[key].btn.className = "px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-50 text-indigo-700 transition flex items-center space-x-1.5";
+                    } else {
+                        tabs[key].el.classList.add('hidden');
+                        tabs[key].btn.className = "px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition flex items-center space-x-1.5";
+                    }
+                });
+
+                if (tab === 'settings') {
+                    this.renderPriceSettingsTable();
+                }
+            }
+
+            populateVendors() {
+                const vendorSelect = document.getElementById('vendorSelect');
+                const settingsVendorSelect = document.getElementById('settingsVendorSelect');
+                const currentVal = vendorSelect.value;
+
+                vendorSelect.innerHTML = '';
+                settingsVendorSelect.innerHTML = '';
+
+                Object.keys(this.rateCards).forEach(vendor => {
+                    const opt1 = document.createElement('option');
+                    opt1.value = vendor;
+                    opt1.textContent = vendor;
+                    vendorSelect.appendChild(opt1);
+
+                    const opt2 = document.createElement('option');
+                    opt2.value = vendor;
+                    opt2.textContent = vendor;
+                    settingsVendorSelect.appendChild(opt2);
+                });
+
+                if (currentVal && this.rateCards[currentVal]) {
+                    vendorSelect.value = currentVal;
+                }
+            }
+
+            onVendorChange() {
+                const vendor = document.getElementById('vendorSelect').value;
+                const productSelect = document.getElementById('productSelect');
+                const prevProduct = productSelect.value;
+                productSelect.innerHTML = '';
+
+                const products = this.rateCards[vendor] || {};
+                Object.keys(products).forEach(prod => {
+                    const opt = document.createElement('option');
+                    opt.value = prod;
+                    opt.textContent = prod;
+                    productSelect.appendChild(opt);
+                });
+
+                if (prevProduct && products[prevProduct] !== undefined) {
+                    productSelect.value = prevProduct;
+                }
+
+                this.onProductChange();
+            }
+
+            getRateMeta(vendor, product) {
+                const rateInfo = this.rateCards[vendor]?.[product];
+                if (typeof rateInfo === 'object' && rateInfo !== null && rateInfo.type === 'fixed') {
+                    return { rate: parseFloat(rateInfo.rate) || 0, type: 'fixed' };
+                }
+                return { rate: parseFloat(rateInfo) || 0, type: 'sqft' };
+            }
+
+            onProductChange() {
+                const vendor = document.getElementById('vendorSelect').value;
+                const product = document.getElementById('productSelect').value;
+                const meta = this.getRateMeta(vendor, product);
+
+                const widthInput = document.getElementById('inputWidth');
+                const heightInput = document.getElementById('inputHeight');
+
+                if (meta.type === 'fixed' && this.rateMode === 'vendor') {
+                    widthInput.value = 1;
+                    heightInput.value = 1;
+                } else if (this.rateMode === 'vendor') {
+                    if (this.unitMode === 'feet') {
+                        widthInput.value = 3;
+                        heightInput.value = 6;
+                    } else {
+                        widthInput.value = 36;
+                        heightInput.value = 72;
+                    }
+                }
+
+                document.getElementById('inputManualRate').value = meta.rate;
+                document.getElementById('inputManualType').value = meta.type;
+                document.getElementById('inputCustomName').value = product;
+
+                this.calculateLive();
+            }
+
+            setRateMode(mode) {
+                this.rateMode = mode;
+                const vendorBtn = document.getElementById('rateModeVendorBtn');
+                const manualBtn = document.getElementById('rateModeManualBtn');
+                const manualControls = document.getElementById('manualRateControls');
+                const vendorInfo = document.getElementById('vendorRateInfo');
+
+                if (mode === 'manual') {
+                    manualBtn.className = "px-2.5 py-1 rounded-md bg-white text-indigo-700 shadow-sm transition";
+                    vendorBtn.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition";
+                    manualControls.classList.remove('hidden');
+                    vendorInfo.classList.add('hidden');
+                } else {
+                    vendorBtn.className = "px-2.5 py-1 rounded-md bg-white text-indigo-700 shadow-sm transition";
+                    manualBtn.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition";
+                    manualControls.classList.add('hidden');
+                    vendorInfo.classList.remove('hidden');
+                }
+
+                this.calculateLive();
+            }
+
+            setUnitMode(mode) {
+                if (this.unitMode === mode) return;
+                this.unitMode = mode;
+                const feetBtn = document.getElementById('modeFeetBtn');
+                const inchesBtn = document.getElementById('modeInchesBtn');
+                const lblW = document.getElementById('labelWidth');
+                const lblH = document.getElementById('labelHeight');
+                const wInput = document.getElementById('inputWidth');
+                const hInput = document.getElementById('inputHeight');
+
+                if (mode === 'feet') {
+                    feetBtn.className = "px-3 py-1 rounded-md bg-white text-indigo-700 shadow-sm transition";
+                    inchesBtn.className = "px-3 py-1 rounded-md text-slate-600 hover:text-slate-900 transition";
+                    lblW.textContent = "Width (ft)";
+                    lblH.textContent = "Height (ft)";
+                    wInput.value = ((parseFloat(wInput.value) || 0) / 12).toFixed(2);
+                    hInput.value = ((parseFloat(hInput.value) || 0) / 12).toFixed(2);
+                } else {
+                    inchesBtn.className = "px-3 py-1 rounded-md bg-white text-indigo-700 shadow-sm transition";
+                    feetBtn.className = "px-3 py-1 rounded-md text-slate-600 hover:text-slate-900 transition";
+                    lblW.textContent = "Width (in)";
+                    lblH.textContent = "Height (in)";
+                    wInput.value = ((parseFloat(wInput.value) || 0) * 12).toFixed(1);
+                    hInput.value = ((parseFloat(hInput.value) || 0) * 12).toFixed(1);
+                }
+                this.calculateLive();
+            }
+
+            calculateLive() {
+                const vendor = document.getElementById('vendorSelect').value;
+                const product = document.getElementById('productSelect').value;
+                const vendorMeta = this.getRateMeta(vendor, product);
+
+                document.getElementById('activeVendorName').textContent = vendor;
+                document.getElementById('activeVendorRateBadge').textContent =
+                    vendorMeta.type === 'fixed'
+                        ? `₹${vendorMeta.rate.toLocaleString('en-IN')} / Pc`
+                        : `₹${vendorMeta.rate.toLocaleString('en-IN')} / Sqft`;
+
+                const rawW = parseFloat(document.getElementById('inputWidth').value) || 0;
+                const rawH = parseFloat(document.getElementById('inputHeight').value) || 0;
+                const qty = Math.max(1, parseInt(document.getElementById('inputQty').value, 10) || 1);
+
+                const widthFt = this.unitMode === 'inches' ? rawW / 12 : rawW;
+                const heightFt = this.unitMode === 'inches' ? rawH / 12 : rawH;
+
+                let unitRate = vendorMeta.rate;
+                let isFixed = vendorMeta.type === 'fixed';
+                const isManual = this.rateMode === 'manual';
+
+                if (isManual) {
+                    unitRate = parseFloat(document.getElementById('inputManualRate').value) || 0;
+                    isFixed = document.getElementById('inputManualType').value === 'fixed';
+                }
+
+                const area = parseFloat((widthFt * heightFt * qty).toFixed(2));
+                const total = isFixed
+                    ? parseFloat((unitRate * qty).toFixed(2))
+                    : parseFloat((area * unitRate).toFixed(2));
+
+                this.currentCalculation = {
+                    vendor,
+                    product,
+                    width: rawW,
+                    height: rawH,
+                    unit: this.unitMode,
+                    qty,
+                    area,
+                    unitRate,
+                    total,
+                    mode: isFixed ? 'Fixed Unit' : 'By Sq. Ft.',
+                    isManual
+                };
+
+                document.getElementById('outArea').textContent = `${area.toFixed(2)} Sqft`;
+                document.getElementById('outRate').textContent = `₹${unitRate.toLocaleString('en-IN')}`;
+                document.getElementById('outMode').textContent = this.currentCalculation.mode;
+                document.getElementById('outTotalPrice').textContent = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                const sourceBadge = document.getElementById('outRateSourceBadge');
+                if (isManual) {
+                    sourceBadge.textContent = 'Manual Price';
+                    sourceBadge.className = 'text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full';
+                } else {
+                    sourceBadge.textContent = 'Vendor Sheet';
+                    sourceBadge.className = 'text-[10px] font-bold uppercase tracking-wider bg-indigo-800 text-indigo-200 px-2.5 py-0.5 rounded-full';
+                }
+            }
+
+            addToQuote() {
+                const customName = document.getElementById('inputCustomName').value.trim() || this.currentCalculation.product;
+                const newItem = {
+                    id: Date.now() + Math.random(),
+                    name: customName,
+                    ...this.currentCalculation
+                };
+
+                this.quoteItems.push(newItem);
+                this.renderQuoteItems();
+                this.showToast(`Added "${customName}" to quote`);
+            }
+
+            removeItem(id) {
+                this.quoteItems = this.quoteItems.filter(item => item.id !== id);
+                this.renderQuoteItems();
+                this.showToast("Item removed from quote");
+            }
+
+            renderQuoteItems() {
+                const container = document.getElementById('quoteItemsList');
+                container.innerHTML = '';
+
+                if (this.quoteItems.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12 text-slate-400">
+                            <i class="fa-solid fa-clipboard-list text-4xl mb-3 text-slate-300"></i>
+                            <p class="text-sm font-medium">No items added to quote yet.</p>
+                            <p class="text-xs text-slate-400 mt-1">Configure dimensions on the left and click "Add to Quotation Table".</p>
+                        </div>
+                    `;
+                    document.getElementById('itemCountBadge').textContent = '0 items';
+                    this.calculateGrandTotal();
+                    return;
+                }
+
+                this.quoteItems.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center justify-between gap-3 text-xs";
+
+                    const manualBadge = item.isManual
+                        ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">Manual</span>`
+                        : '';
+
+                    const dimUnit = item.unit === 'inches' ? '"' : 'ft';
+                    const rateDesc = item.mode === 'By Sq. Ft.'
+                        ? `${item.area} sqft @ ₹${item.unitRate}/sqft`
+                        : `Fixed @ ₹${item.unitRate} each`;
+
+                    card.innerHTML = `
+                        <div class="space-y-1">
+                            <div class="font-bold text-slate-900 text-sm flex items-center flex-wrap gap-1.5">
+                                <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">${index + 1}</span>
+                                <span>${this.escapeHtml(item.name)}</span>
+                                ${manualBadge}
+                            </div>
+                            <div class="text-slate-500 pl-7">
+                                ${this.escapeHtml(item.product)} | Qty: ${item.qty} | ${rateDesc} (${item.width}${dimUnit} × ${item.height}${dimUnit})
+                            </div>
+                        </div>
+                        <div class="text-right flex items-center space-x-3">
+                            <div>
+                                <span class="block font-extrabold text-slate-900 text-sm">₹${item.total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                            </div>
+                            <button type="button" class="remove-btn text-slate-400 hover:text-red-600 p-1 rounded transition no-print" title="Remove">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    card.querySelector('.remove-btn').addEventListener('click', () => this.removeItem(item.id));
+                    container.appendChild(card);
+                });
+
+                document.getElementById('itemCountBadge').textContent = `${this.quoteItems.length} item${this.quoteItems.length === 1 ? '' : 's'}`;
+                this.calculateGrandTotal();
+            }
+
+            calculateGrandTotal() {
+                const subtotal = this.quoteItems.reduce((sum, item) => sum + item.total, 0);
+                const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+                const taxAmount = (subtotal * taxRate) / 100;
+                const grandTotal = subtotal + taxAmount;
+
+                document.getElementById('summarySubtotal').textContent = `₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById('summaryGrandTotal').textContent = `₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            // --- PRICE SETTINGS MANAGER ---
+            renderPriceSettingsTable() {
+                const vendor = document.getElementById('settingsVendorSelect').value;
+                const tbody = document.getElementById('priceSettingsTableBody');
+                const products = this.rateCards[vendor] || {};
+                tbody.innerHTML = '';
+
+                Object.keys(products).forEach(prod => {
+                    const meta = this.getRateMeta(vendor, prod);
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50/70 transition';
+
+                    // Name cell
+                    const tdName = document.createElement('td');
+                    tdName.className = 'py-2.5 px-4 font-medium text-slate-800';
+                    tdName.textContent = prod;
+
+                    // Mode cell
+                    const tdMode = document.createElement('td');
+                    tdMode.className = 'py-2.5 px-4';
+                    const selectMode = document.createElement('select');
+                    selectMode.className = 'w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500';
+                    selectMode.innerHTML = `
+                        <option value="sqft" ${meta.type === 'sqft' ? 'selected' : ''}>Per Sq. Ft.</option>
+                        <option value="fixed" ${meta.type === 'fixed' ? 'selected' : ''}>Fixed Unit</option>
+                    `;
+                    selectMode.addEventListener('change', (e) => this.updateProductRate(prod, null, e.target.value));
+                    tdMode.appendChild(selectMode);
+
+                    // Rate cell
+                    const tdRate = document.createElement('td');
+                    tdRate.className = 'py-2.5 px-4';
+                    const inputRate = document.createElement('input');
+                    inputRate.type = 'number';
+                    inputRate.value = meta.rate;
+                    inputRate.step = 'any';
+                    inputRate.min = '0';
+                    inputRate.className = 'w-full px-2.5 py-1.5 text-sm font-semibold bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500';
+                    inputRate.addEventListener('change', (e) => this.updateProductRate(prod, e.target.value, null));
+                    tdRate.appendChild(inputRate);
+
+                    // Delete cell
+                    const tdAction = document.createElement('td');
+                    tdAction.className = 'py-2.5 px-4 text-center';
+                    const delBtn = document.createElement('button');
+                    delBtn.type = 'button';
+                    delBtn.className = 'text-slate-400 hover:text-red-600 p-1.5 rounded-lg transition';
+                    delBtn.title = 'Delete material';
+                    delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                    delBtn.addEventListener('click', () => this.deleteProduct(prod));
+                    tdAction.appendChild(delBtn);
+
+                    tr.appendChild(tdName);
+                    tr.appendChild(tdMode);
+                    tr.appendChild(tdRate);
+                    tr.appendChild(tdAction);
+                    tbody.appendChild(tr);
+                });
+            }
+
+            updateProductRate(product, newRate, newType) {
+                const vendor = document.getElementById('settingsVendorSelect').value;
+                const current = this.getRateMeta(vendor, product);
+                const rate = newRate !== null ? (parseFloat(newRate) || 0) : current.rate;
+                const type = newType !== null ? newType : current.type;
+
+                this.rateCards[vendor][product] = type === 'fixed' ? { rate, type: 'fixed' } : rate;
+                this.saveRateCards();
+
+                if (document.getElementById('vendorSelect').value === vendor) {
+                    this.calculateLive();
+                }
+                this.showToast(`Updated "${product}" to ₹${rate} (${type === 'fixed' ? 'Fixed' : 'Per Sqft'})`);
+            }
+
+            addNewProduct() {
+                const vendor = document.getElementById('settingsVendorSelect').value;
+                const name = document.getElementById('newProductName').value.trim();
+                const rate = parseFloat(document.getElementById('newProductRate').value);
+                const type = document.getElementById('newProductType').value;
+
+                if (!name) {
+                    this.showToast("Please enter a material name.", "error");
+                    return;
+                }
+                if (isNaN(rate) || rate < 0) {
+                    this.showToast("Please enter a valid rate.", "error");
+                    return;
+                }
+
+                this.rateCards[vendor][name] = type === 'fixed' ? { rate, type: 'fixed' } : rate;
+                this.saveRateCards();
+
+                document.getElementById('newProductName').value = '';
+                document.getElementById('newProductRate').value = '';
+
+                this.renderPriceSettingsTable();
+                if (document.getElementById('vendorSelect').value === vendor) {
+                    this.onVendorChange();
+                }
+                this.showToast(`Added "${name}" to ${vendor}`);
+            }
+
+            deleteProduct(product) {
+                const vendor = document.getElementById('settingsVendorSelect').value;
+                if (Object.keys(this.rateCards[vendor]).length <= 1) {
+                    this.showToast("Keep at least one material per vendor.", "error");
+                    return;
+                }
+                if (confirm(`Delete "${product}" from ${vendor}?`)) {
+                    delete this.rateCards[vendor][product];
+                    this.saveRateCards();
+                    this.renderPriceSettingsTable();
+                    if (document.getElementById('vendorSelect').value === vendor) {
+                        this.onVendorChange();
+                    }
+                    this.showToast(`Removed "${product}"`);
+                }
+            }
+
+            resetDefaultRates() {
+                if (confirm("Reset all vendor prices back to the original default rate sheet?")) {
+                    this.rateCards = JSON.parse(JSON.stringify(DEFAULT_RATE_CARDS));
+                    this.saveRateCards();
+                    this.populateVendors();
+                    this.onVendorChange();
+                    this.renderPriceSettingsTable();
+                    this.showToast("All vendor rates reset to defaults");
+                }
+            }
+
+            resetAll() {
+                if (this.quoteItems.length === 0) return;
+                if (confirm("Clear all quotation items?")) {
+                    this.quoteItems = [];
+                    this.renderQuoteItems();
+                    this.showToast("Quotation reset");
+                }
+            }
+
+            printQuote() {
+                window.print();
+            }
+
+            async copyQuoteText() {
+                if (this.quoteItems.length === 0) {
+                    this.showToast("No items in quote to copy.", "error");
+                    return;
+                }
+
+                let text = `SIGNAGE & PRINT QUOTATION\nVendor: ${document.getElementById('vendorSelect').value}\n-----------------------------------\n`;
+                this.quoteItems.forEach((item, idx) => {
+                    const rateDetail = item.mode === 'By Sq. Ft.'
+                        ? `${item.area} sqft @ ₹${item.unitRate}/sqft`
+                        : `Fixed @ ₹${item.unitRate}`;
+                    text += `${idx + 1}. ${item.name} (${item.product}${item.isManual ? ' - Manual Rate' : ''}) | ${rateDetail} | Qty: ${item.qty} - ₹${item.total.toFixed(2)}\n`;
+                });
+                text += `-----------------------------------\nSubtotal: ${document.getElementById('summarySubtotal').textContent}\nGST (${document.getElementById('taxRate').value}%)\nGrand Total: ${document.getElementById('summaryGrandTotal').textContent}`;
+
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(text);
+                    } else {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = text;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                    }
+                    this.showToast("Quotation summary copied to clipboard!");
+                } catch (err) {
+                    this.showToast("Failed to copy", "error");
+                }
+            }
+
+            convertInchesToFeet() {
+                const inches = parseFloat(document.getElementById('convInchesInput').value) || 0;
+                const feet = inches / 12;
+                const remainderInches = inches % 12;
+                let text = `${feet.toFixed(2)} ft (${inches}")`;
+                if (remainderInches > 0 && inches >= 12) {
+                    const fullFt = Math.floor(feet);
+                    text = `${fullFt} ft ${remainderInches.toFixed(1)} in (${inches}")`;
+                }
+                document.getElementById('convInchesResult').textContent = text;
+            }
+
+            calculateQuickArea() {
+                const wIn = parseFloat(document.getElementById('areaWidthIn').value) || 0;
+                const hIn = parseFloat(document.getElementById('areaHeightIn').value) || 0;
+                const rate = parseFloat(document.getElementById('areaRateIn').value) || 0;
+
+                const wFt = wIn / 12;
+                const hFt = hIn / 12;
+                const sqft = parseFloat((wFt * hFt).toFixed(2));
+                const cost = parseFloat((sqft * rate).toFixed(2));
+
+                document.getElementById('quickAreaSqft').textContent = `${sqft.toFixed(2)} Sqft`;
+                document.getElementById('quickAreaFtW').textContent = `${wFt.toFixed(2)} ft`;
+                document.getElementById('quickAreaFtH').textContent = `${hFt.toFixed(2)} ft`;
+                document.getElementById('quickAreaCost').textContent = `₹${cost.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            calculateBulk() {
+                const w = parseFloat(document.getElementById('bulkW').value) || 0;
+                const h = parseFloat(document.getElementById('bulkH').value) || 0;
+                const qty = Math.max(1, parseInt(document.getElementById('bulkQty').value, 10) || 1);
+                const rate = parseFloat(document.getElementById('bulkRate').value) || 0;
+
+                const totalSqft = parseFloat((w * h * qty).toFixed(2));
+                const totalPrice = parseFloat((totalSqft * rate).toFixed(2));
+
+                document.getElementById('bulkQtyText').textContent = qty;
+                document.getElementById('bulkTotalSqft').textContent = `${totalSqft.toFixed(2)} Sqft`;
+                document.getElementById('bulkTotalPrice').textContent = `₹${totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                const toastIcon = document.getElementById('toastIcon');
+
+                toastMessage.textContent = message;
+                toastIcon.className = type === 'error'
+                    ? "fa-solid fa-circle-exclamation text-red-400 text-lg"
+                    : "fa-solid fa-circle-check text-emerald-400 text-lg";
+
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                clearTimeout(this.toastTimer);
+                this.toastTimer = setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+            }
+        }
+
+        const app = new SignageProApp();
+    </script>
+</body>
+</html>
