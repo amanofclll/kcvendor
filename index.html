@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signage & Print Pro Calculator & Utility Suite</title>
+    <title> Pratham Branding & Utility Suite</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -56,7 +56,7 @@
                     <i class="fa-solid fa-calculator text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base sm:text-lg text-slate-900 tracking-tight">Signage & Print Pro Calculator</h1>
+                    <h1 class="font-bold text-base sm:text-lg text-slate-900 tracking-tight">Print Pro Calculator x Aman</h1>
                     <p class="text-xs text-slate-500 hidden sm:block">Vendor Rate Engine, Manual Pricing & Dimension Utility Suite</p>
                 </div>
             </div>
@@ -123,12 +123,12 @@
                                     </div>
                                 </div>
 
-                                <!-- Manual Price Controls (Wrapper avoids Tailwind hidden+grid conflict) -->
+                                <!-- Manual Price Controls -->
                                 <div id="manualRateControls" class="hidden pt-1">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <div>
                                             <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Your Custom Rate (₹)</label>
-                                            <input type="number" id="inputManualRate" value="45" step="any" min="0" oninput="app.calculateLive()" class="w-full px-3 py-2 text-sm bg-white border border-indigo-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold text-indigo-900">
+                                            <input type="number" id="inputManualRate" value="55" step="any" min="0" oninput="app.calculateLive()" class="w-full px-3 py-2 text-sm bg-white border border-indigo-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold text-indigo-900">
                                         </div>
                                         <div>
                                             <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Calculation Type</label>
@@ -143,7 +143,7 @@
                                 <!-- Vendor Rate Preview -->
                                 <div id="vendorRateInfo" class="flex items-center justify-between text-xs text-slate-500">
                                     <span>Using rate from <strong id="activeVendorName" class="text-slate-700">AD MEDIA</strong> sheet</span>
-                                    <span id="activeVendorRateBadge" class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md">₹45 / Sqft</span>
+                                    <span id="activeVendorRateBadge" class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md">₹55 / Sqft</span>
                                 </div>
                             </div>
 
@@ -197,7 +197,7 @@
                             </div>
                             <div>
                                 <span class="block text-indigo-300 text-xs">Unit Rate</span>
-                                <span id="outRate" class="text-base sm:text-lg font-bold">₹45</span>
+                                <span id="outRate" class="text-base sm:text-lg font-bold">₹55</span>
                             </div>
                             <div>
                                 <span class="block text-indigo-300 text-xs">Pricing Mode</span>
@@ -208,7 +208,7 @@
                         <div class="flex items-center justify-between mb-6">
                             <div>
                                 <span class="text-xs sm:text-sm text-indigo-200">Calculated Item Price</span>
-                                <h2 id="outTotalPrice" class="text-2xl sm:text-3xl font-extrabold text-white">₹810.00</h2>
+                                <h2 id="outTotalPrice" class="text-2xl sm:text-3xl font-extrabold text-white">₹990.00</h2>
                             </div>
                         </div>
 
@@ -392,7 +392,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">Estimated Rate per Sq Ft (₹)</label>
-                        <input type="number" id="areaRateIn" value="45" step="any" oninput="app.calculateQuickArea()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <input type="number" id="areaRateIn" value="55" step="any" oninput="app.calculateQuickArea()" class="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
 
                     <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100 flex items-center justify-between">
@@ -402,7 +402,7 @@
                         </div>
                         <div class="text-right">
                             <span class="block text-[10px] uppercase font-semibold text-indigo-600">Estimated Cost</span>
-                            <span id="quickAreaCost" class="text-lg font-extrabold text-indigo-700">₹810.00</span>
+                            <span id="quickAreaCost" class="text-lg font-extrabold text-indigo-700">₹990.00</span>
                         </div>
                     </div>
                 </div>
@@ -462,211 +462,113 @@
 
     <!-- Footer -->
     <footer class="mt-auto py-6 border-t border-slate-200 bg-white text-center text-xs text-slate-500 no-print">
-        <p>Signage & Print Pro Calculator Suite &bull; Supports Vendor Price Sheets & Custom Manual Pricing.</p>
+        <p>Print Pro Calculator x Aman Suite &bull; Supports Vendor Price Sheets & Custom Manual Pricing.</p>
     </footer>
 
     <!-- Main JavaScript Engine -->
     <script>
-        const STORAGE_KEY = 'signage_pro_rate_cards_v1';
+        const STORAGE_KEY = 'signage_pro_rate_cards_v2';
 
         const DEFAULT_RATE_CARDS = {
             "AD MEDIA": {
-                "VINYL": 45,
+                "VINYL": 55,
                 "VINYL SUNBOARD 3 MM": 85,
-                "VINYL SUNBOARD 5 MM": 110,
-                "ONE WAY VISION": 55,
-                "TRANSLIGHT": 120,
-                "TRANSPARENT VINYL": 60,
                 "FLEX CHANGE": 20,
-                "BANNER MEDIA": 18,
-                "BANNER NORMAL": 15,
-                "BANNER STAR": 25,
-                "BANNER BLACKOUT": 35,
-                "BANNER MINI STAR": 22,
-                "MS FRAME BOARD": 140,
+                "MS FRAME BOARD": 65,
                 "BACKLIGHT BOARD": 180,
-                "BACKLIGHT BOARD DOUBLE SIDE": 320,
-                "LIGHT BOARD": 150,
-                "ACRYLIC BOARD": 250,
-                "SUN BOARD 3MM": 75,
-                "SUN BOARD 5MM": 95,
-                "HOARDING": 200,
+                "BACKLIGHT FLEX CHANGE": 80,
+                "SANDWITCH": { rate: 2000, type: "fixed" },
                 "STENDE 2.5 X 5 FEET": { rate: 1000, type: "fixed" },
                 "STENDE 3 X 6 FEET": { rate: 1150, type: "fixed" },
-                "T-Stend Double Side": { rate: 1400, type: "fixed" },
-                "CANOPY 6X 7 FEET": { rate: 3500, type: "fixed" },
-                "STANDEE COMPLETE": { rate: 1150, type: "fixed" },
-                "POSTER A1": { rate: 150, type: "fixed" },
-                "POSTER": { rate: 100, type: "fixed" },
-                "letter cutting": 15,
-                "PAMPHLATE": { rate: 2, type: "fixed" },
-                "LETTER HEAD": { rate: 3, type: "fixed" },
-                "VISITING CARD": { rate: 250, type: "fixed" }
+                "TRANSLIGHT": 55,
+                "CANOPY 6X 7 FEET": { rate: 2300, type: "fixed" },
+                "BANNER MEDIA": 30,
+                "POSTER A1": { rate: 160, type: "fixed" },
+                "LETTER CUTTING": { rate: 750, type: "fixed" },
+                "ONE WAY VISION": 55
             },
             "DAYA ENT.": {
-                "VINYL": 42,
+                "VINYL": 50,
                 "VINYL SUNBOARD 3 MM": 80,
-                "VINYL SUNBOARD 5 MM": 105,
-                "ONE WAY VISION": 52,
-                "TRANSLIGHT": 115,
-                "TRANSPARENT VINYL": 58,
-                "FLEX CHANGE": 18,
-                "BANNER MEDIA": 16,
-                "BANNER NORMAL": 14,
-                "BANNER STAR": 23,
-                "BANNER BLACKOUT": 32,
-                "BANNER MINI STAR": 20,
-                "MS FRAME BOARD": 135,
-                "BACKLIGHT BOARD": 170,
-                "BACKLIGHT BOARD DOUBLE SIDE": 300,
-                "LIGHT BOARD": 145,
-                "ACRYLIC BOARD": 240,
-                "SUN BOARD 3MM": 70,
-                "SUN BOARD 5MM": 90,
-                "HOARDING": 190,
-                "STENDE 2.5 X 5 FEET": { rate: 950, type: "fixed" },
-                "STENDE 3 X 6 FEET": { rate: 1100, type: "fixed" },
-                "T-Stend Double Side": { rate: 1300, type: "fixed" },
+                "VINYL SUNBOARD 5 MM": 85,
+                "FLEX CHANGE": 20,
+                "MS FRAME BOARD": 60,
+                "BACKLIGHT BOARD DOUBLE SIDE": 335,
+                "BACKLIGHT BOARD": 180,
+                "BACKLIGHT FLEX CHANGE": 60,
+                "SANDWITCH": { rate: 1850, type: "fixed" },
+                "STENDE 2.5 X 5 FEET": { rate: 925, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1150, type: "fixed" },
+                "TRANSLIGHT": 60,
                 "CANOPY 6X 7 FEET": { rate: 3300, type: "fixed" },
-                "STANDEE COMPLETE": { rate: 1100, type: "fixed" },
-                "POSTER A1": { rate: 140, type: "fixed" },
-                "POSTER": { rate: 90, type: "fixed" },
-                "letter cutting": 14,
-                "PAMPHLATE": { rate: 1.8, type: "fixed" },
-                "LETTER HEAD": { rate: 2.8, type: "fixed" },
-                "VISITING CARD": { rate: 230, type: "fixed" }
+                "T-STAND DOUBLE SIDE": { rate: 90, type: "fixed" },
+                "POSTER A1": { rate: 160, type: "fixed" }
             },
             "AD ZONE": {
-                "VINYL": 48,
-                "VINYL SUNBOARD 3 MM": 90,
-                "VINYL SUNBOARD 5 MM": 115,
-                "ONE WAY VISION": 58,
-                "TRANSLIGHT": 125,
-                "TRANSPARENT VINYL": 62,
-                "FLEX CHANGE": 22,
-                "BANNER MEDIA": 20,
-                "BANNER NORMAL": 17,
-                "BANNER STAR": 27,
-                "BANNER BLACKOUT": 38,
-                "BANNER MINI STAR": 24,
-                "MS FRAME BOARD": 145,
+                "VINYL": 50,
+                "VINYL SUNBOARD 3 MM": 80,
+                "FLEX CHANGE": 15,
+                "MS FRAME BOARD": 70,
                 "BACKLIGHT BOARD": 190,
-                "BACKLIGHT BOARD DOUBLE SIDE": 340,
-                "LIGHT BOARD": 160,
-                "ACRYLIC BOARD": 260,
-                "SUN BOARD 3MM": 80,
-                "SUN BOARD 5MM": 100,
-                "HOARDING": 210,
-                "STENDE 2.5 X 5 FEET": { rate: 1050, type: "fixed" },
-                "STENDE 3 X 6 FEET": { rate: 1200, type: "fixed" },
-                "T-Stend Double Side": { rate: 1500, type: "fixed" },
-                "CANOPY 6X 7 FEET": { rate: 3600, type: "fixed" },
-                "STANDEE COMPLETE": { rate: 1200, type: "fixed" },
-                "POSTER A1": { rate: 160, type: "fixed" },
-                "POSTER": { rate: 110, type: "fixed" },
-                "letter cutting": 16,
-                "PAMPHLATE": { rate: 2.2, type: "fixed" },
-                "LETTER HEAD": { rate: 3.2, type: "fixed" },
-                "VISITING CARD": { rate: 270, type: "fixed" }
+                "BACKLIGHT FLEX CHANGE": 80,
+                "SANDWITCH": { rate: 2500, type: "fixed" },
+                "STENDE 2.5 X 5 FEET": { rate: 1000, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1100, type: "fixed" },
+                "CANOPY 6X 7 FEET": { rate: 2500, type: "fixed" }
             },
             "CREATIVAGE": {
-                "VINYL": 45,
-                "VINYL SUNBOARD 3 MM": 85,
-                "VINYL SUNBOARD 5 MM": 110,
-                "ONE WAY VISION": 55,
-                "TRANSLIGHT": 120,
-                "TRANSPARENT VINYL": 60,
-                "FLEX CHANGE": 20,
-                "BANNER MEDIA": 18,
-                "BANNER NORMAL": 15,
-                "BANNER STAR": 25,
-                "BANNER BLACKOUT": 35,
-                "BANNER MINI STAR": 22,
-                "MS FRAME BOARD": 140,
-                "BACKLIGHT BOARD": 180,
-                "BACKLIGHT BOARD DOUBLE SIDE": 320,
-                "LIGHT BOARD": 150,
-                "ACRYLIC BOARD": 250,
-                "SUN BOARD 3MM": 75,
-                "SUN BOARD 5MM": 95,
-                "HOARDING": 200,
-                "STENDE 2.5 X 5 FEET": { rate: 1000, type: "fixed" },
-                "STENDE 3 X 6 FEET": { rate: 1150, type: "fixed" },
-                "T-Stend Double Side": { rate: 1400, type: "fixed" },
+                "VINYL": 50,
+                "VINYL SUNBOARD 3 MM": 60,
+                "VINYL SUNBOARD 5 MM": 70,
+                "FLEX CHANGE": 12,
+                "MS FRAME BOARD": 50,
+                "MS FRAME BOARD (DOUBLE SIDE)": 70,
+                "BACKLIGHT BOARD": 190,
+                "BACKLIGHT FLEX CHANGE": 80,
+                "SANDWITCH": { rate: 1900, type: "fixed" },
+                "STENDE 2.5 X 5 FEET": { rate: 900, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 1000, type: "fixed" },
                 "CANOPY 6X 7 FEET": { rate: 3500, type: "fixed" },
-                "STANDEE COMPLETE": { rate: 1150, type: "fixed" },
-                "POSTER A1": { rate: 150, type: "fixed" },
-                "POSTER": { rate: 100, type: "fixed" },
-                "letter cutting": 15,
-                "PAMPHLATE": { rate: 2, type: "fixed" },
-                "LETTER HEAD": { rate: 3, type: "fixed" },
-                "VISITING CARD": { rate: 250, type: "fixed" }
+                "T-STAND DOUBLE SIDE": { rate: 90, type: "fixed" },
+                "BANNER MEDIA": 28,
+                "POSTER A1": { rate: 160, type: "fixed" },
+                "LETTER CUTTING": { rate: 550, type: "fixed" }
             },
             "Geeta": {
-                "VINYL": 40,
-                "VINYL SUNBOARD 3 MM": 78,
-                "VINYL SUNBOARD 5 MM": 100,
-                "ONE WAY VISION": 50,
-                "TRANSLIGHT": 110,
-                "TRANSPARENT VINYL": 55,
-                "FLEX CHANGE": 17,
-                "BANNER MEDIA": 15,
-                "BANNER NORMAL": 13,
-                "BANNER STAR": 22,
-                "BANNER BLACKOUT": 30,
-                "BANNER MINI STAR": 19,
-                "MS FRAME BOARD": 130,
-                "BACKLIGHT BOARD": 165,
-                "BACKLIGHT BOARD DOUBLE SIDE": 290,
-                "LIGHT BOARD": 140,
-                "ACRYLIC BOARD": 230,
-                "SUN BOARD 3MM": 68,
-                "SUN BOARD 5MM": 88,
-                "HOARDING": 185,
-                "STENDE 2.5 X 5 FEET": { rate: 900, type: "fixed" },
-                "STENDE 3 X 6 FEET": { rate: 1050, type: "fixed" },
-                "T-Stend Double Side": { rate: 1250, type: "fixed" },
-                "CANOPY 6X 7 FEET": { rate: 3200, type: "fixed" },
-                "STANDEE COMPLETE": { rate: 1050, type: "fixed" },
-                "POSTER A1": { rate: 130, type: "fixed" },
-                "POSTER": { rate: 85, type: "fixed" },
-                "letter cutting": 13,
-                "PAMPHLATE": { rate: 1.5, type: "fixed" },
-                "LETTER HEAD": { rate: 2.5, type: "fixed" },
-                "VISITING CARD": { rate: 210, type: "fixed" }
+                "VINYL": 30,
+                "VINYL SUNBOARD 3 MM": 45,
+                "VINYL SUNBOARD 5 MM": 60,
+                "FLEX CHANGE": 25,
+                "MS FRAME BOARD": 50,
+                "BACKLIGHT BOARD DOUBLE SIDE": 250,
+                "BACKLIGHT BOARD": 200,
+                "BACKLIGHT FLEX CHANGE": 75,
+                "SANDWITCH": { rate: 450, type: "fixed" },
+                "STENDE 2.5 X 5 FEET": { rate: 700, type: "fixed" },
+                "STENDE 3 X 6 FEET": { rate: 850, type: "fixed" },
+                "TRANSLIGHT": 40,
+                "CANOPY 6X 7 FEET": { rate: 2500, type: "fixed" },
+                "T-STAND DOUBLE SIDE": { rate: 1800, type: "fixed" },
+                "BANNER MEDIA": 45
             },
             "SHREE VASU PRINT": {
-                "VINYL": 43,
-                "VINYL SUNBOARD 3 MM": 82,
-                "VINYL SUNBOARD 5 MM": 108,
-                "ONE WAY VISION": 53,
-                "TRANSLIGHT": 118,
-                "TRANSPARENT VINYL": 59,
-                "FLEX CHANGE": 19,
-                "BANNER MEDIA": 17,
-                "BANNER NORMAL": 14,
-                "BANNER STAR": 24,
-                "BANNER BLACKOUT": 33,
-                "BANNER MINI STAR": 21,
-                "MS FRAME BOARD": 138,
-                "BACKLIGHT BOARD": 175,
-                "BACKLIGHT BOARD DOUBLE SIDE": 310,
-                "LIGHT BOARD": 148,
-                "ACRYLIC BOARD": 245,
-                "SUN BOARD 3MM": 72,
-                "SUN BOARD 5MM": 92,
-                "HOARDING": 195,
-                "STENDE 2.5 X 5 FEET": { rate: 980, type: "fixed" },
-                "STENDE 3 X 6 FEET": { rate: 1050, type: "fixed" },
-                "T-Stend Double Side": { rate: 1350, type: "fixed" },
-                "CANOPY 6X 7 FEET": { rate: 3400, type: "fixed" },
-                "STANDEE COMPLETE": { rate: 1050, type: "fixed" },
-                "POSTER A1": { rate: 145, type: "fixed" },
-                "POSTER": { rate: 95, type: "fixed" },
-                "letter cutting": 14,
-                "PAMPHLATE": { rate: 1.9, type: "fixed" },
-                "LETTER HEAD": { rate: 2.9, type: "fixed" },
-                "VISITING CARD": { rate: 220, type: "fixed" }
+                "BANNER NORMAL": 10,
+                "BANNER STAR": 17,
+                "BANNER BLACKOUT": 14,
+                "BANNER MINI STAR": 12,
+                "HOARDING": 20,
+                "PAMPHLATE (4000)": { rate: 5500, type: "fixed" },
+                "LETTER HEAD (4000)": { rate: 5500, type: "fixed" },
+                "LIGHT BOARD": 350,
+                "VISITING CARD (1000 PCS)": { rate: 500, type: "fixed" },
+                "VINYL": 45,
+                "ONE WAY VISION": 65,
+                "STANDEE COMPLETE": { rate: 1100, type: "fixed" },
+                "POSTER": { rate: 6000, type: "fixed" },
+                "TRANSPARENT VINYL": 60,
+                "ACRYLIC BOARD": 350,
+                "SUN BOARD 3MM": 650,
+                "SUN BOARD 5MM": 100
             }
         };
 
@@ -1039,12 +941,10 @@
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-slate-50/70 transition';
 
-                    // Name cell
                     const tdName = document.createElement('td');
                     tdName.className = 'py-2.5 px-4 font-medium text-slate-800';
                     tdName.textContent = prod;
 
-                    // Mode cell
                     const tdMode = document.createElement('td');
                     tdMode.className = 'py-2.5 px-4';
                     const selectMode = document.createElement('select');
@@ -1056,7 +956,6 @@
                     selectMode.addEventListener('change', (e) => this.updateProductRate(prod, null, e.target.value));
                     tdMode.appendChild(selectMode);
 
-                    // Rate cell
                     const tdRate = document.createElement('td');
                     tdRate.className = 'py-2.5 px-4';
                     const inputRate = document.createElement('input');
@@ -1068,7 +967,6 @@
                     inputRate.addEventListener('change', (e) => this.updateProductRate(prod, e.target.value, null));
                     tdRate.appendChild(inputRate);
 
-                    // Delete cell
                     const tdAction = document.createElement('td');
                     tdAction.className = 'py-2.5 px-4 text-center';
                     const delBtn = document.createElement('button');
